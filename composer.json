@@ -1,11 +1,18 @@
 {
-    "name": "alex-oleshkevich/flat-file-db",
-    "license": "MIT",
-    "type": "library",
+    "name": "ovidiu/gb",
+    "description": "Simple guest book with flat file store",
+    "require": {
+        "jamesmoss/flywheel": "^0.4.2"
+    },
     "autoload": {
-        "psr-4": { 
-            "FlatFileDb\\": "src/FlatFileDb",
-            "FlatFileDbTest\\": "tests/FlatFileDbTest"
+        "psr-0": {
+            "Gb":"src/"
         }
-    }
+    },
+    "authors": [
+        {
+            "name": "Ovidiu Maghetiu",
+            "email": "ovidiumght@gmail.com"
+        }
+    ]
 }

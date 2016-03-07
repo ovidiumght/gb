@@ -25,26 +25,27 @@
             $scope.getComments();
 
             $scope.addComment = function () {
+                if($scope.commentForm.$valid) {
+                    $http.put('api.php', $scope.comment).then(function (response) {
+                        $mdToast.show(
+                                $mdToast.simple()
+                                        .textContent('Comment added!')
+                                        .position('top right')
+                                        .hideDelay(3000)
+                        );
 
-                $http.put('api.php', $scope.comment).then(function (response) {
-                    $mdToast.show(
-                            $mdToast.simple()
-                                    .textContent('Comment added!')
-                                    .position('top right')
-                                    .hideDelay(3000)
-                    );
+                        $scope.getComments();
 
-                    $scope.getComments();
-
-                    $scope.comment = {};
-                }, function (response) {
-                    $mdToast.show(
-                            $mdToast.simple()
-                                    .textContent(response.data)
-                                    .position('top right')
-                                    .hideDelay(3000)
-                    );
-                });
+                        $scope.comment = {};
+                    }, function (response) {
+                        $mdToast.show(
+                                $mdToast.simple()
+                                        .textContent(response.data)
+                                        .position('top right')
+                                        .hideDelay(3000)
+                        );
+                    });
+                }
             }
         });
     </script>

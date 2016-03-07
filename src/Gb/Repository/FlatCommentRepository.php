@@ -26,13 +26,14 @@ class FlatCommentRepository implements CommentRepository
     {
         $response = [];
 
-        $comments = $this->flatFileRepo->query()->execute();
+        $comments = $this->flatFileRepo->query()->orderBy('time ASC')->execute();
+
 
         foreach($comments as $comment) {
-            var_dump($comment->email);
             $formatted['name'] = $comment->name;
             $formatted['email'] = $comment->email;
             $formatted['content'] = $comment->content;
+            $formatted['gravatar'] = 'http://www.gravatar.com/avatar/'.md5($comment->email).'0/s/200';
 
             $response[] = $formatted;
         }

@@ -1,0 +1,90 @@
+<html>
+<head>
+    <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.5.0/angular.min.js"></script>
+    <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.5.0/angular-animate.min.js"></script>
+    <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.5.0/angular-aria.min.js"></script>
+    <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.5.0/angular-messages.min.js"></script>
+    <script src="http://ajax.googleapis.com/ajax/libs/angular_material/1.0.5/angular-material.min.js"></script>
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/angular-material/1.0.6/angular-material.css"/>
+
+    <script type="text/javascript">
+        var gb = angular.module('gb', ['ngMaterial']);
+        gb.controller('gbController', function ($scope, $http, $mdToast) {
+
+            $scope.comments = [];
+
+            $scope.getComments = function () {
+                $http.get('api.php').then(function (response) {
+                    $scope.comments = response.data;
+                }, function ($data) {
+
+                });
+            };
+
+            $scope.getComments();
+
+            $scope.addComment = function () {
+
+                $http.put('api.php', $scope.comment).then(function (response) {
+                    $mdToast.show(
+                            $mdToast.simple()
+                                    .textContent('Comment added!')
+                                    .position('top right')
+                                    .hideDelay(3000)
+                    );
+
+                    $scope.getComments();
+
+                    $scope.comment = {};
+                }, function (response) {
+                    $mdToast.show(
+                            $mdToast.simple()
+                                    .textContent(response.data)
+                                    .position('top right')
+                                    .hideDelay(3000)
+                    );
+                });
+            }
+        });
+    </script>
+</head>
+<body ng-app="gb" ng-controller="gbController" layout-align="center start" layout="columnt">
+
+<div class="md-whiteframe-2dp" style="margin-top:20px; margin-bottom: 20px; width: 60%;">
+    <md-list>
+        <md-subheader class="md-no-sticky">Comments</md-subheader>
+        <md-list-item class="md-3-line" ng-repeat="comment in comments">
+            <img ng-src="{{comment.gravatar}}" class="md-avatar" alt="{{item.who}}"/>
+            <div class="md-list-item-text" layout="column">
+                <h3>{{ comment.name }}</h3>
+                <h4>{{ comment.email }}</h4>
+                <p>{{ comment.content }}</p>
+            </div>
+        </md-list-item>
+    </md-list>
+    <div class="md-padding">
+        <h2 class="md-title">Add comment</h2>
+        <form name="commentForm" novalidate ng-submit="addComment()">
+            <md-input-container class="md-block">
+                <label>First Name</label>
+                <input ng-model="comment.firstName" required minlength="3">
+            </md-input-container>
+            <md-input-container class="md-block">
+                <label>Last Name</label>
+                <input ng-model="comment.lastName" required minlength="3">
+            </md-input-container>
+            <md-input-container class="md-block">
+                <label>Email</label>
+                <input ng-model="comment.email" required type="email" email>
+            </md-input-container>
+            <md-input-container class="md-block">
+                <label>Comment</label>
+                <input ng-model="comment.content" required minlength="5">
+            </md-input-container>
+            <md-button type="submit" class="md-raised md-primary">Add Comment</md-button>
+        </form>
+    </div>
+</div>
+</body>
+</html>

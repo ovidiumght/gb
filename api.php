@@ -31,7 +31,7 @@ if($request == 'GET') {
 
         $name = new Gb\Vo\Name($requestContent['firstName'],$requestContent['lastName']);
         $email = new Gb\Vo\Email($requestContent['email']);
-        $messageContent = new Gb\Vo\CommentContent($requestContent['message']);
+        $messageContent = new Gb\Vo\CommentContent($requestContent['content']);
 
         $comment = new Gb\Comment\Comment($name, $email, $messageContent);
 
